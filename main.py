@@ -4,24 +4,14 @@ import random
 
 class Product:
 	def __init__(self, productName, productPrice):
-		self.Name = productName
-		self.Price = productPrice
-		self.ID = random.randint(0,9999)
-
-	def setName(self, name):
-		self.Name = name
-
-	def setPrice(self, price):
-		self.Price = price
+		self.__Name = productName
+		self.__Price = productPrice
 
 	def getName(self):
-		return self.Name
+		return self.__Name
 
 	def getPrice(self):
-		return self.Price
-
-	def getID(self):
-		return self.ID
+		return self.__Price
 		
 
 class ProductManager:
@@ -58,14 +48,14 @@ class ProductManager:
 				#read_items function with the second parameter "title" returns a list of all the
 				#titles (product names) of all the products in that particular file
 				#products store a LIST of all of the products
-				products = []
+				self.__products = []
 				try:
 					file = open(filename, "r")
 					file_contents = file.readline()
 					while file_contents!="":
 						file_contents_splitted = file_contents.split(",")
 						product_object = Product(file_contents_splitted[0].strip(), file_contents_splitted[1].strip())
-						products.append(product_object)
+						self.__products.append(product_object)
 						file_contents = file.readline()
 					
 					file.close()
@@ -80,10 +70,10 @@ class ProductManager:
 				#this is needed to display appropriate message later on.
 				found = False
 				#loop through the list of products sequentially to find the matching product with the user's search query
-				while search_counter < len(products) and found == False:
+				while search_counter < len(self.__products) and found == False:
 					#if the product is found in the file, the index of the item is set to
 					#the location of where the product was found
-					if products[search_counter].getName() == search_query:
+					if self.__products[search_counter].getName() == search_query:
 							#item found
 							#item_index is the location of the item found in the array
 						item_index = search_counter
@@ -127,16 +117,16 @@ class ProductManager:
 					#item index indicates the location of the item inside the products list
 					#so therefore the product will be displayed to the user
 					confirmation_number = random.randint(1,99999)
-					sys.stdout.write("Successfully bought "+products[item_index].getName()+"! \nThank you for your purchase! Your confirmation number is "+str(confirmation_number)+"\nThank you for shopping with Shopada! \n")
+					sys.stdout.write("Successfully bought "+self.__products[item_index].getName()+"! \nThank you for your purchase! Your confirmation number is "+str(confirmation_number)+"\nThank you for shopping with Shopada! \n")
 					
 					#if the user chooses to check the price of the product instead of buying,
 				elif next_option =="B":
 					#item_price stores the price of the partcular item the user searches for
 					#in the search query previously
-					item_price = products[item_index].getPrice()
+					item_price = self.__products[item_index].getPrice()
 					sys.stdout.flush()
 					#price will be displayed to the user
-					sys.stdout.write("The price for "+products[item_index].getName()+" is $"+str(item_price)+"\n")
+					sys.stdout.write("The price for "+self.__products[item_index].getName()+" is $"+str(item_price)+"\n")
 					
 				else:
 					#when product not found
@@ -149,7 +139,7 @@ class ProductManager:
 					#if the user chooses to add a new product to the database
 					if add_new_if_have =="Y":
 						#add new items subroutine will run
-						self.add_new_items()
+						self.__add_new_items()
 	#if the user enters a character other than Y, the program will assume that the user does not wish
 	#to take the offer of adding new item.
 						
@@ -162,14 +152,14 @@ class ProductManager:
 			#choice B is when the user chooses to add new item to the file.	
 			elif choice =="B":
 				#add new items to the file subroutine will run and subsequently add new items to the file
-				self.add_new_items()
+				self.__add_new_items()
 				#next option is prompted to ask whether the user chooses to continue searching, adding or
 				#pressing any other key will stop the while loop, subsequently ending the program.
 				sys.stdout.write("What is your next choice? \n[A]Search for item \n[B]Add new item \nAny other key to stop. Enter choice: ")
 				sys.stdout.flush()
 				choice = sys.stdin.readline().strip()
 				
-	def add_new_items(self):
+	def __add_new_items(self):
 		sys.stdout.write("Enter the product name:")
 		sys.stdout.flush()
 		productname = sys.stdin.readline().strip()
@@ -205,7 +195,10 @@ class ProductManager:
 					file_line_current = file_to_read.readline()
 	          
 				file_to_read.close()
-	        
+			except:
+				sys.stdout.write("Existing file does not exist")
+
+			try:	
 				file_open = open(filename, "w")
 				line_to_write = new_product.getName()+","+str(new_product.getPrice())+"\n"
 				counter = 0
@@ -217,9 +210,9 @@ class ProductManager:
 	        
 				file_open.close()
 
-				sys.stdout.write("Succesfully written ti file! \n")
+				sys.stdout.write("Succesfully written to file! \n")
 			except:
-				sys.stdout.write("Unable to write o file!")
+				sys.stdout.write("Unable to write to file!")
       
 
 my_product_manager = ProductManager()
