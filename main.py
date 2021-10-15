@@ -16,6 +16,8 @@ class Product:
 
 class ProductManager:
 	def __init__(self):
+		self.__products = []
+		
 		sys.stdout.write("Welcome to the Shopada E-Commerce Platform! \nPress [A] to search for an item \nPress [B] to add a new item. \nPress any other key to terminate the program \nEnter choice: ")
 		sys.stdout.flush()
 		choice = sys.stdin.readline().strip()
@@ -48,7 +50,6 @@ class ProductManager:
 				#read_items function with the second parameter "title" returns a list of all the
 				#titles (product names) of all the products in that particular file
 				#products store a LIST of all of the products
-				self.__products = []
 				try:
 					file = open(filename, "r")
 					file_contents = file.readline()
@@ -139,7 +140,7 @@ class ProductManager:
 					#if the user chooses to add a new product to the database
 					if add_new_if_have =="Y":
 						#add new items subroutine will run
-						self.__add_new_items()
+						self.__addNewItems()
 	#if the user enters a character other than Y, the program will assume that the user does not wish
 	#to take the offer of adding new item.
 						
@@ -152,14 +153,14 @@ class ProductManager:
 			#choice B is when the user chooses to add new item to the file.	
 			elif choice =="B":
 				#add new items to the file subroutine will run and subsequently add new items to the file
-				self.__add_new_items()
+				self.__addNewItems()
 				#next option is prompted to ask whether the user chooses to continue searching, adding or
 				#pressing any other key will stop the while loop, subsequently ending the program.
 				sys.stdout.write("What is your next choice? \n[A]Search for item \n[B]Add new item \nAny other key to stop. Enter choice: ")
 				sys.stdout.flush()
 				choice = sys.stdin.readline().strip()
 				
-	def __add_new_items(self):
+	def __addNewItems(self):
 		sys.stdout.write("Enter the product name:")
 		sys.stdout.flush()
 		productname = sys.stdin.readline().strip()
