@@ -2,6 +2,7 @@ import sys
 #importing random to generate a random confirmation number when the user buys a product
 import random
 
+#product class to store the data type of product objects
 class Product:
 	def __init__(self, productName, productPrice):
 		self.__Name = productName
@@ -39,11 +40,7 @@ class ProductManager:
 				sys.stdout.write("Please enter the name of the file you would like to search your items from: ")
 				sys.stdout.flush()
 				#name of the file of the product user wants to search from, will be called through the function and the name of file will be validated there
-				filename = sys.stdin.readline().strip()
-				while filename[-4:] != ".csv":
-					sys.stdout.write("File must end in .csv format! Re-Enter: ")
-					sys.stdout.flush()
-					filename = sys.stdin.readline().strip()
+				filename = self.__validateFileName()
 
 			
 				#get the list of all the products in that catalog (reads from file) 
@@ -167,12 +164,7 @@ class ProductManager:
     
 		sys.stdout.write("Enter the filename you want to save it to: ")
 		sys.stdout.flush()
-		filename = sys.stdin.readline().strip()
-    
-		while filename[-4:]!=".csv":
-			sys.stdout.write("Invalid file name, re enter: ")
-			sys.stdout.flush()
-			filename = sys.stdin.readline()
+		filename = self.__validateFileName()
       
 		resume = True
 		try:
@@ -214,6 +206,16 @@ class ProductManager:
 				sys.stdout.write("Succesfully written to file! \n")
 			except:
 				sys.stdout.write("Unable to write to file!")
+
+
+	def __validateFileName(self):
+		filename = sys.stdin.readline().strip()
+		while filename[-4:] != ".csv":
+			sys.stdout.write("File must end in .csv format! Re-Enter: ")
+			sys.stdout.flush()
+			filename = sys.stdin.readline().strip()
+
+		return filename.strip()
       
 
 my_product_manager = ProductManager()
